@@ -1,22 +1,22 @@
 # wallet
 
-Passo a passo
+# Passo a passo
 
-Clone Repositório
+# Clone Repositório
 
 git clone https://github.com/sarasouza18/wallet.git
 
 cd wallet/
 
-Remova o versionamento (opcional)
+# Remova o versionamento (opcional)
 
 rm -rf .git/
 
-Crie o Arquivo .env
+# Crie o Arquivo .env
 
 cp .env.example .env
 
-Atualize as variáveis de ambiente do arquivo .env
+# Atualize as variáveis de ambiente do arquivo .env
 
 APP_NAME="Wallet"
 APP_URL=http://localhost:8981
@@ -36,15 +36,15 @@ REDIS_HOST=redis
 REDIS_PASSWORD=null
 REDIS_PORT=6379
 
-Suba os containers do projeto
+# Suba os containers do projeto
 
 docker-compose up -d
 
-Acesse o container app com o bash
+# Acesse o container app com o bash
 
 docker-compose exec app bash
 
-Instale as dependências do projeto
+# Instale as dependências do projeto
 
 composer install
 
