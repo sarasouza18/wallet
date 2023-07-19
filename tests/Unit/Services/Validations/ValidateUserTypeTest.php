@@ -17,9 +17,9 @@ class ValidateUserTypeTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     * @var Model|Application|mixed
+     * @var
      */
-    private Model $validate;
+    private $validate;
 
 
     /**

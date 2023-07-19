@@ -15,9 +15,9 @@ class AddBalanceTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     * @var Model|Application|mixed
+     * @var
      */
-    private Model $addBalance;
+    private $addBalance;
 
 
     /**

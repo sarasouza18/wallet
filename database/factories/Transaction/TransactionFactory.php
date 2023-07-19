@@ -14,6 +14,7 @@ class TransactionFactory extends Factory
     {
         return [
             'wallet_id' => Wallet::factory()->create()->id,
+            'wallet_payee_id' => Wallet::factory()->create()->id,
             'type_id' => TransactionType::factory()->create()->id,
             'status_id' => TransactionStatus::factory()->create()->id,
             'amount' => 10,

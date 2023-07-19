@@ -19,7 +19,7 @@ class ValidateUserType extends Service
     {
         try {
             if ($userType != UserType::CUSTOMER) {
-                throw new Exception('User type = ' . $userType);
+                throw new Exception('User type not allowed');
             }
         } catch (Throwable $e) {
             Log::info($e->getMessage(), ['code' => 'user_type_not_allowed', 'exception' => $e,]);

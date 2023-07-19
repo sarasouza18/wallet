@@ -18,9 +18,9 @@ class CreateCashbookTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     * @var Model|Application|mixed
+     * @var
      */
-    private Model $cashbook;
+    private $cashbook;
 
 
     /**
@@ -47,14 +47,14 @@ class CreateCashbookTest extends TestCase
         $this->assertDatabaseHas('cashbooks', [
             'wallet_id' => $wallet->id,
             'transaction_id' => $transaction->id,
-            'operation' => -10,
+            'amount' => -10,
         ]);
 
         $this->cashbook->execute($wallet->id, Cashbook::ADD, 10, $transaction->id);
         $this->assertDatabaseHas('cashbooks', [
             'wallet_id' => $wallet->id,
             'transaction_id' => $transaction->id,
-            'operation' => 10,
+            'amount' => 10,
         ]);
     }
 }

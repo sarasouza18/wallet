@@ -15,9 +15,9 @@ class CreateWalletTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     * @var Model|Application|mixed
+     * @var
      */
-    private Model $user;
+    private $user;
 
 
     /**

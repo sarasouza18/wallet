@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Transaction\TransactionStatus;
 use App\Models\Transaction\TransactionType;
+use App\Models\User\User;
+use App\Models\User\UserType;
 use App\Models\Wallet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -30,20 +32,54 @@ class WalletControllerTest  extends TestCase
      */
     public function test_transfer(): void
     {
-        TransactionType::factory()->create();
-        TransactionStatus::factory()->create();
-        TransactionStatus::factory()->create([
+        $tt = TransactionType::factory()->create();
+        $ts = TransactionStatus::factory()->create();
+        $ts1 = TransactionStatus::factory()->create([
             'title' => 'success',
             'description' => 'success'
         ]);
 
-        TransactionStatus::factory()->create([
+        $ts2 =TransactionStatus::factory()->create([
             'title' => 'failed',
             'description' => 'failed'
         ]);
 
-        $wallet = Wallet::factory()->create();
-        $walletPayee = Wallet::factory()->create();
+        $userType = UserType::factory()->create();
+        $userType2 = UserType::factory()->create();
+
+        $userType->id = 1;
+        $userType->save();
+
+        $userType2->id = 2;
+        $userType2->save();
+
+        $tt->id = 1;
+        $tt->save();
+
+        $ts->id = 1;
+        $ts->save();
+
+        $ts1->id = 2;
+        $ts1->save();
+
+        $ts2->id = 3;
+        $ts2->save();
+
+        $user = User::factory()->create([
+            'type_id' => 1
+        ]);
+
+        $user2 = User::factory()->create([
+            'type_id' => 1
+        ]);
+
+        $wallet = Wallet::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $walletPayee = Wallet::factory()->create([
+            'user_id' => $user2->id,
+        ]);
 
         $this->withHeaders([
             'token' => config('token'),

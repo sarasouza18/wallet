@@ -33,12 +33,7 @@ class CreateUser extends Service
                 'string',
             ],
             'password' => [
-                'min:6',
-                'required_with:password_confirmation',
-                'same:password_confirmation',
-            ],
-            'password_confirmation' => [
-                'min:6',
+                'min:6'
             ],
             'type_id' => [
                 'integer',

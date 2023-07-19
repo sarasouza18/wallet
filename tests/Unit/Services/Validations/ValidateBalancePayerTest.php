@@ -15,9 +15,9 @@ class ValidateBalancePayerTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     * @var Model|Application|mixed
+     * @var
      */
-    private Model $validateBalancePayer;
+    private $validateBalancePayer;
 
 
     /**
