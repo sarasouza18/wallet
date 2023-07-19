@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use Database\Factories\User\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,5 +53,13 @@ class User extends Authenticatable
     public function type(): BelongsTo
     {
         return $this->belongsTo(UserType::class);
+    }
+
+    /**
+     * @return UserFactory
+     */
+    protected static function UserFactory(): UserFactory
+    {
+        return new UserFactory();
     }
 }

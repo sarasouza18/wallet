@@ -30,7 +30,7 @@ class MockyProxy
     }
 
     /**
-     * @return mixed
+     * @return bool
      * @throws GuzzleException
      */
     public function authorization()
@@ -44,7 +44,7 @@ class MockyProxy
 
         $response =  json_decode($response->getBody(), true);
 
-        if ($response == 'authorization') {
+        if ($response['message'] == 'Autorizado') {
             return true;
         }
         return false;
@@ -52,7 +52,7 @@ class MockyProxy
     }
 
     /**
-     * @return mixed
+     * @return bool
      * @throws GuzzleException
      */
     public function notify()
@@ -64,7 +64,11 @@ class MockyProxy
             ]
         ]);
 
-        return json_decode($response->getBody(), true);
+        $response = json_decode($response->getBody(), true);
+        if ($response['message'] == 'Success') {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Transaction\TransactionStatus;
+use App\Models\Transaction\TransactionType;
 use App\Models\Wallet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -23,14 +25,39 @@ class WalletControllerTest  extends TestCase
         $this->artisan('db:seed');
     }
 
+    /**
+     * @return void
+     */
     public function test_transfer(): void
     {
+        TransactionType::factory()->create();
+        TransactionStatus::factory()->create();
+        TransactionStatus::factory()->create([
+            'title' => 'success',
+            'description' => 'success'
+        ]);
+
+        TransactionStatus::factory()->create([
+            'title' => 'failed',
+            'description' => 'failed'
+        ]);
+
+        $wallet = Wallet::factory()->create();
+        $walletPayee = Wallet::factory()->create();
+
         $this->withHeaders([
             'token' => config('token'),
         ])->post(route('wallet.transfer'), [
-            'amount' => 20,
-            'wallet_id' => Wallet::factory()->create()->id,
-            'wallet_payee_id' => Wallet::factory()->create()->id,
-        ]);
+            'amount' => 200,
+            'wallet_id' => $wallet->id,
+            'wallet_payee_id' => $walletPayee->id,
+        ])
+            ->assertCreated();
+
+        $wallet->refresh();
+        $walletPayee->refresh();
+
+        $this->assertEquals($wallet->balance, 800);
+        $this->assertEquals($walletPayee->balance, 1200);
     }
 }

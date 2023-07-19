@@ -25,7 +25,6 @@ Route::middleware(['validate.transaction'])->group(function () {
     Route::post('/users', [UserController::class, 'store'])->name('user.store');
 
     Route::post('/wallets', [WalletController::class, 'store'])->name('wallet.store');
-    Route::get('/wallets', [WalletController::class, 'show'])->name('wallet.show');
 
     Route::post('/transfer', [WalletController::class, 'transfer'])->name('wallet.transfer');
 

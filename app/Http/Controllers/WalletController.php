@@ -14,6 +14,39 @@ use Illuminate\Http\Response;
 
 class WalletController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/wallets",
+     *     summary="Create a new wallet",
+     *     description="create a new wallet",
+     *     security={{"bearerAuth": {} }},
+     *
+     *
+     *     @OA\Parameter(
+     *          name="token",
+     *          description="token id",
+     *          required=false,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string",
+     *              example="token"
+     *        )
+     *     ),
+     *
+     *     @OA\Response(
+     *          response="201",
+     *          description="Success",
+     *     ),
+     *     @OA\Response(
+     *          response=500,
+     *          description="Exception message"
+     *     ),
+     * )
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function store(Request $request): JsonResponse
     {
         try {
@@ -28,20 +61,39 @@ class WalletController extends Controller
         return (new WalletResource($wallet))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(string $id): JsonResponse
-    {
-        try {
-            $wallet = app(GetWallet::class)->execute(['id' => $id]);
-
-        } catch (Exception $e) {
-            return response()
-                ->json(['message' => $e->getMessage()])
-                ->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-
-        return (new WalletResource($wallet))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
+    /**
+     * @OA\Post(
+     *     path="/wallets/transfer",
+     *     summary="Create a new transfer",
+     *     description="Subtracts a value from wallet and add a value in another wallet.",
+     *     security={{"bearerAuth": {} }},
+     *
+     *
+     *     @OA\Parameter(
+     *          name="token",
+     *          description="token id",
+     *          required=false,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string",
+     *              example="token"
+     *        )
+     *     ),
+     *
+     *     @OA\Response(
+     *          response="201",
+     *          description="Success",
+     *     ),
+     *     @OA\Response(
+     *          response=500,
+     *          description="Exception message"
+     *     ),
+     * )
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function transfer(Request $request): JsonResponse
     {
         try {

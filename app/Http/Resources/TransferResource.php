@@ -14,7 +14,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TransferResource extends JsonResource
 {
     /**
-     * @OA\Property (property="id", type="string", example="1")
      * @OA\Property (property="wallet_id", type="string", example="e6361d62-2666-11ee-be56-0242ac120002")
      * @OA\Property (property="wallet_payee_id", type="string", example="e6361d62-2666-11ee-be56-0242ac120002")
      * @OA\Property (property="amount", type="integer", example=0)
@@ -30,10 +29,9 @@ class TransferResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->id,
             'wallet_id' => $this->wallet_id,
             'wallet_payee_id' => $this->wallet_payee_id,
-            'transaction_id' => $this->transaction_id,
+            'transaction_id' => $this->id,
             'amount' => $this->amount,
             'updated_at' => $this->updated_at,
         ];

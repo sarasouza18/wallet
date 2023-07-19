@@ -14,6 +14,10 @@ class Wallet extends Model
 {
     use HasFactory, Notifiable;
 
+    public $incrementing = false;
+
+    protected $keyType = 'uuid';
+
     /**
      * @var array
      */

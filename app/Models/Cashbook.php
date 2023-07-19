@@ -11,6 +11,8 @@ class Cashbook extends Model
 {
     use HasFactory;
 
+    protected $table = 'cashbooks';
+
     public const DEDUCT = 1;
 
     public const ADD = 2;
