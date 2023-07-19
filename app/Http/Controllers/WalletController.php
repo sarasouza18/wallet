@@ -19,8 +19,6 @@ class WalletController extends Controller
      *     path="/wallets",
      *     summary="Create a new wallet",
      *     description="create a new wallet",
-     *     security={{"bearerAuth": {} }},
-     *
      *
      *     @OA\Parameter(
      *          name="token",
@@ -66,7 +64,6 @@ class WalletController extends Controller
      *     path="/wallets/transfer",
      *     summary="Create a new transfer",
      *     description="Subtracts a value from wallet and add a value in another wallet.",
-     *     security={{"bearerAuth": {} }},
      *
      *
      *     @OA\Parameter(

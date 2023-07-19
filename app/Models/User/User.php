@@ -54,12 +54,4 @@ class User extends Authenticatable
     {
         return $this->belongsTo(UserType::class);
     }
-
-    /**
-     * @return UserFactory
-     */
-    protected static function UserFactory(): UserFactory
-    {
-        return new UserFactory();
-    }
 }

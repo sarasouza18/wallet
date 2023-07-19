@@ -56,15 +56,9 @@ class CreateTransfer extends Service
         $wallet = Wallet::find($data['wallet_id']);
         $walletPayee = Wallet::find($data['wallet_payee_id']);
 
-        app(ValidateUserType::class)->execute($wallet->user->type->id);
+        $this->validations($wallet->user->type->id, $wallet->balance, $data);
 
-        app(ValidateBalancePayer::class)->execute($wallet->balance, $data['amount']);
-
-        $auth = app(MockyProxy::class)->authorization();
-
-        if (!$auth) {
-            throw new Exception('not authorization');
-        }
+        $this->auth();
 
         $transaction = $this->createTransaction($wallet->id, $walletPayee->id, $data['amount']);
 
@@ -76,17 +70,48 @@ class CreateTransfer extends Service
 
         app(CreateCashbook::class)->execute($walletPayee->id, Cashbook::ADD, $data['amount'], $transaction->id);
 
+        $this->notify($transaction);
+
+        return $transaction;
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    private function auth()
+    {
+        $auth = app(MockyProxy::class)->authorization();
+
+        if (!$auth) {
+            throw new Exception('not authorization');
+        }
+    }
+
+    /**
+     * @param Transaction $transaction
+     * @return void
+     */
+    private function notify(Transaction $transaction)
+    {
         $notify = app(MockyProxy::class)->notify();
 
         if ($notify) {
             $transaction->status_id = TransactionStatus::SUCCESS;
-            $transaction->save();
         } else {
             $transaction->status_id = TransactionStatus::FAILED;
-            $transaction->save();
         }
+        $transaction->save();
+    }
 
-        return $transaction;
+    /**
+     * @return void
+     */
+    private function validations(string $typeId, float $balance, array $data)
+    {
+        app(ValidateUserType::class)->execute($typeId);
+
+        app(ValidateBalancePayer::class)->execute($balance, $data['amount']);
     }
 
     /**

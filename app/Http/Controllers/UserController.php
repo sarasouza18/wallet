@@ -17,8 +17,6 @@ class UserController extends Controller
      *     path="/users",
      *     summary="Create a new user",
      *     description="create a new user",
-     *     security={{"bearerAuth": {} }},
-     *
      *
      *     @OA\Parameter(
      *          name="token",
