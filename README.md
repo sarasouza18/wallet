@@ -68,6 +68,11 @@ Gere a key do projeto Laravel
 php artisan key:generate
 ```
 
+Rodar testes unitários
+```sh
+php artisan test
+```
+
 
 Acesse o projeto
 [http://localhost:8981](http://localhost:8981)
