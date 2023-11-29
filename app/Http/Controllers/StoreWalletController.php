@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class WalletController extends Controller
+class CreateWalletController extends Controller
 {
     /**
      * @OA\Post(
@@ -45,7 +45,7 @@ class WalletController extends Controller
      *
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         try {
             $wallet = app(CreateWallet::class)->execute($request->all());
@@ -57,49 +57,5 @@ class WalletController extends Controller
         }
 
         return (new WalletResource($wallet))->response()->setStatusCode(Response::HTTP_CREATED);
-    }
-
-    /**
-     * @OA\Post(
-     *     path="/wallets/transfer",
-     *     summary="Create a new transfer",
-     *     description="Subtracts a value from wallet and add a value in another wallet.",
-     *
-     *
-     *     @OA\Parameter(
-     *          name="token",
-     *          description="token id",
-     *          required=false,
-     *          in="header",
-     *          @OA\Schema(
-     *              type="string",
-     *              example="token"
-     *        )
-     *     ),
-     *
-     *     @OA\Response(
-     *          response="201",
-     *          description="Success",
-     *     ),
-     *     @OA\Response(
-     *          response=500,
-     *          description="Exception message"
-     *     ),
-     * )
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function transfer(Request $request): JsonResponse
-    {
-        try {
-            $transfer = app(CreateTransfer::class)->execute($request->all());
-        } catch (Exception $e) {
-            return response()
-                ->json(['message' => $e->getMessage()])
-                ->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-        return (new TransferResource($transfer))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 }

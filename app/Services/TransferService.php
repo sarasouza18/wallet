@@ -13,43 +13,10 @@ use App\Services\Validations\ValidateUserType;
 use Exception;
 use Illuminate\Validation\ValidationException;
 
-class CreateTransfer extends Service
+class CreateTransfer
 {
-    /**
-     * Get the validation rules that apply to the service.
-     *
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            'wallet_id' => [
-                'required',
-                'exists:wallets,id',
-                'string',
-            ],
-            'amount' => [
-                'required',
-                'between:1,100000000',
-                'integer',
-            ],
-            'wallet_payee_id' => [
-                'required',
-                'exists:wallets,id',
-                'string',
-            ],
-        ];
-    }
-
-    /**
-     * Create an activity type.
-     *
-     * @param array $data
-     *
-     * @return Transaction
-     * @throws ValidationException
-     */
-    public function execute(array $data)
+    
+    public function transfer(array $data)
     {
         $this->validate($data);
 
