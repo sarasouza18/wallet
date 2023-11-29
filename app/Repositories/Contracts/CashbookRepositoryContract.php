@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-class CashbookRepositoryContract
+interface CashbookRepositoryContract extends BaseRepositoryContract
 {
 
 }

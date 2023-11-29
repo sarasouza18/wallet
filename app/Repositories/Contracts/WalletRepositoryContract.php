@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-class WalletReposityContract
+interface WalletRepositoryContract extends BaseRepositoryContract
 {
 
 }

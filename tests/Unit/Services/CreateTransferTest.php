@@ -7,7 +7,7 @@ use App\Models\Transaction\TransactionType;
 use App\Models\User\User;
 use App\Models\User\UserType;
 use App\Models\Wallet;
-use App\Services\CreateTransfer;
+use App\Services\TransferService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,7 +32,7 @@ class CreateTransferTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->transfer = app(CreateTransfer::class);
+        $this->transfer = app(TransferService::class);
     }
 
     /**

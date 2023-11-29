@@ -2,20 +2,18 @@
 
 namespace App\Services\Validations;
 
-use App\Services\Service;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class ValidateBalancePayer extends Service
+class ValidateBalancePayer
 {
-
     /**
      * @param float $balance
      * @param float $amount
      * @throws Exception
      */
-    public function execute(float $balance, float $amount) : void
+    public function validate(float $balance, float $amount) : void
     {
         try {
             if ($amount > $balance) {

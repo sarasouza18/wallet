@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TransferResource;
 use App\Http\Resources\WalletResource;
-use App\Services\CreateTransfer;
+use App\Services\TransferService;
 use App\Services\CreateWallet;
 use App\Services\GetWallet;
 use Exception;
@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class CreateWalletController extends Controller
+class StoreWalletController extends Controller
 {
     /**
      * @OA\Post(

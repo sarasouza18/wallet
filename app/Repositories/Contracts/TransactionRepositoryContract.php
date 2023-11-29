@@ -2,7 +2,8 @@
 
 namespace App\Repositories\Contracts;
 
-class TransactionRepositoryContract
+interface TransactionRepositoryContract extends BaseRepositoryContract
 {
 
 }
+

@@ -2,7 +2,7 @@
 
 namespace App\Services\Contracts;
 
-class CashbookServiceContract
+interface CashbookServiceContract
 {
 
 }

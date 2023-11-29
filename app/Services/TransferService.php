@@ -5,21 +5,21 @@ namespace App\Services;
 use App\Models\Cashbook;
 use App\Models\Transaction\Transaction;
 use App\Models\Transaction\TransactionStatus;
-use App\Models\Transaction\TransactionType;
 use App\Models\Wallet;
 use App\Proxys\MockyProxy;
+use App\Repositories\Contracts\TransactionRepositoryContract;
+use App\Services\Contracts\CashbookServiceContract;
+use App\Services\Contracts\TransferServiceContract;
+use App\Services\Contracts\WalletServiceContract;
 use App\Services\Validations\ValidateBalancePayer;
 use App\Services\Validations\ValidateUserType;
 use Exception;
-use Illuminate\Validation\ValidationException;
 
-class CreateTransfer
+class TransferService implements TransferServiceContract
 {
-    
-    public function transfer(array $data)
-    {
-        $this->validate($data);
 
+    public function transfer(array $data): Transaction
+    {
         $wallet = Wallet::find($data['wallet_id']);
         $walletPayee = Wallet::find($data['wallet_payee_id']);
 
@@ -27,15 +27,16 @@ class CreateTransfer
 
         $this->auth();
 
-        $transaction = $this->createTransaction($wallet->id, $walletPayee->id, $data['amount']);
 
-        app(DeductBalance::class)->execute($wallet->id, $data['amount']);
+        $transaction = app(TransactionRepositoryContract::class)->store($data);
 
-        app(CreateCashbook::class)->execute($wallet->id, Cashbook::DEDUCT, $data['amount'], $transaction->id);
+        app(WalletServiceContract::class)->deductBalance($wallet->id, $data['amount']);
 
-        app(AddBalance::class)->execute($walletPayee->id, $data['amount']);
+        app(CashbookServiceContract::class)->store($wallet->id, Cashbook::DEDUCT, $data['amount'], $transaction->id);
 
-        app(CreateCashbook::class)->execute($walletPayee->id, Cashbook::ADD, $data['amount'], $transaction->id);
+        app(WalletServiceContract::class)->addBalance($walletPayee->id, $data['amount']);
+
+        app(CashbookServiceContract::class)->store($walletPayee->id, Cashbook::ADD, $data['amount'], $transaction->id);
 
         $this->notify($transaction);
 
@@ -46,7 +47,7 @@ class CreateTransfer
      * @return void
      * @throws Exception
      */
-    private function auth()
+    private function auth(): void
     {
         $auth = app(MockyProxy::class)->authorization();
 
@@ -59,7 +60,7 @@ class CreateTransfer
      * @param Transaction $transaction
      * @return void
      */
-    private function notify(Transaction $transaction)
+    private function notify(Transaction $transaction): void
     {
         $notify = app(MockyProxy::class)->notify();
 
@@ -72,29 +73,15 @@ class CreateTransfer
     }
 
     /**
+     * @param string $typeId
+     * @param float $balance
+     * @param array $data
      * @return void
      */
-    private function validations(string $typeId, float $balance, array $data)
+    private function validations(string $typeId, float $balance, array $data): void
     {
         app(ValidateUserType::class)->execute($typeId);
 
         app(ValidateBalancePayer::class)->execute($balance, $data['amount']);
-    }
-
-    /**
-     * @param string $walletId
-     * @param string $walletPayeeId
-     * @param float $amount
-     * @return Transaction
-     */
-    public function createTransaction(string $walletId, string $walletPayeeId, float $amount) : Transaction
-    {
-        return Transaction::create([
-            'wallet_id' => $walletId,
-            'wallet_payee_id' => $walletPayeeId,
-            'type_id' => TransactionType::TRANSFER,
-            'status_id' => TransactionStatus::PROCESSING,
-            'amount' => $amount
-        ]);
     }
 }

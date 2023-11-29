@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-class StoreUserService
+use App\Services\Contracts\UserServiceContract;
+
+class UserService implements UserServiceContract
 {
 
 }

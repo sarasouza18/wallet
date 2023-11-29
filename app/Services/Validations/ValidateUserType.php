@@ -8,14 +8,14 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class ValidateUserType extends Service
+class ValidateUserType
 {
 
     /**
      * @param string $userType
      * @throws Exception
      */
-    public function execute(string $userType) : void
+    public function validate(string $userType) : void
     {
         try {
             if ($userType != UserType::CUSTOMER) {
